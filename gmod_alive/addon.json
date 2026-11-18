@@ -1,0 +1,17 @@
+{
+    "title": "GMod Alive: Talking AI NPCs",
+    "type": "npc",
+    "tags": [
+        "roleplay",
+        "realism"
+    ],
+    "ignore": [
+        "*.psd",
+        "*.blend",
+        "*.vcproj",
+        "*.svn*",
+        "*.git*",
+        "*.bak",
+        "*.tmp"
+    ]
+}

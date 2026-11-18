@@ -220,7 +220,7 @@ function GA.GenerateNPCResponse(opts, callback)
 	end
 
 	local cfg = GA.GetActiveConfig(ply)
-	if cfg.apiKey == "" then
+	if cfg.apiKey == "" and not GA.Providers[cfg.provider].localModel then
 		callback(false, "No API key configured for this provider. Open F6 > Connection.")
 		return
 	end
@@ -254,7 +254,7 @@ end
 -- Auto-detect working model via live failover cascade & test connection
 function GA.TestAPIConnection(ply, callback)
 	local cfg = GA.GetActiveConfig(ply)
-	if cfg.apiKey == "" then
+	if cfg.apiKey == "" and not GA.Providers[cfg.provider].localModel then
 		callback(false, "Enter an API key for the selected provider first!", 0, "")
 		return
 	end

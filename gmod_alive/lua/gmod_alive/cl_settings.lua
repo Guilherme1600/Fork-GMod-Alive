@@ -172,10 +172,16 @@ function GA.OpenSettings()
     end
     local test=button(connection,GA.L("Salvar chave e testar conexão"),function()
         if GA.APITesting then return end collectConnection()
-        if cfg.apiKey=="" then GA.APIStatusText=GA.L("Cole uma chave antes de testar.") GA.APIStatusOK=false return end
+        if cfg.apiKey=="" and not GA.Providers[cfg.provider].localModel then GA.APIStatusText=GA.L("Cole uma chave antes de testar.") GA.APIStatusOK=false return end
         GA.SaveAndSyncClientAPIConfig(true)
     end,true)
     test.Think=function(self) self:SetEnabled(not GA.APITesting) end
+    label(connection,"Ollama (local model): choose 'Ollama (local model)', leave the key EMPTY and type your model name above exactly as in `ollama list` (e.g. llama3.1:8b, qwen2.5:7b or your own custom model). Ollama must be running on the machine that hosts the game server. Nothing is sent to a paid API.",78,C.muted)
+    if game.SinglePlayer() or (IsValid(LocalPlayer()) and LocalPlayer():IsListenServerHost()) then
+        label(connection,"Ollama address (server host only)",24)
+        local ou=entry(connection,GetConVar("gmod_alive_ollama_url") and GetConVar("gmod_alive_ollama_url"):GetString() or "http://127.0.0.1:11434",38,false,"http://127.0.0.1:11434")
+        ou.OnLoseFocus=function(self) RunConsoleCommand("gmod_alive_ollama_url",string.Trim(self:GetValue())) end
+    end
     label(connection,GA.L("Provider quotas and pricing vary. Your key is stored locally and sent to this game server for AI requests. Use servers you trust."),52,C.muted)
     local audio=pages[2].body
     label(audio,"NPC voice",26,C.accent)
